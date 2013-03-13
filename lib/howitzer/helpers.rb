@@ -2,6 +2,10 @@ def sauce_driver?
   settings.driver.to_sym == :sauce
 end
 
+def testingbot_driver?
+  settings.driver.to_sym == :testingbot
+end
+
 def selenium_driver?
   settings.driver.to_sym == :selenium
 end
@@ -10,6 +14,8 @@ def ie_browser?
   ie_browsers = [:ie, :iexplore]
   if sauce_driver?
     ie_browsers.include?(settings.sl_browser_name.to_sym)
+  elsif testingbot_driver?
+    ie_browsers.include?(settings.tb_browser_name.to_sym)
   elsif selenium_driver?
     ie_browsers.include?(settings.sel_browser.to_sym)
   end
@@ -19,6 +25,8 @@ def ff_browser?
   ff_browsers = [:ff, :firefox]
   if sauce_driver?
     ff_browsers.include?(settings.sl_browser_name.to_sym)
+  elsif testingbot_driver?
+    ff_browsers.include?(settings.tb_browser_name.to_sym)
   elsif selenium_driver?
     ff_browsers.include?(settings.sel_browser.to_sym)
   end
@@ -28,7 +36,9 @@ def chrome_browser?
   chrome_browser = :chrome
   if sauce_driver?
     settings.sl_browser_name.to_sym == chrome_browser
-  elsif
+  elsif testingbot_driver?
+    settings.tb_browser_name.to_sym == chrome_browser
+  elsif selenium_driver?
     settings.sel_browser.to_sym == chrome_browser
   end
 end

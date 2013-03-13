@@ -90,9 +90,40 @@ module CapybaraSettings
         end
         driver
       end
+    when :testingbot
+      task_name = ENV['RAKE_TASK'].to_s.sub(/(?:r?spec|cucumber):?(.*)/, '\1').upcase
+      caps_opts = {
+          platform: settings.tb_platform,
+          browser_name: settings.tb_browser_name,
+          name: "#{ENV['RAKE_TASK'] ? (task_name.empty? ? 'ALL' : task_name) : 'CUSTOM'} #{settings.tb_browser_name.upcase}",
+          "max-duration" => settings.tb_max_duration,
+          'idle-timeout' => settings.tb_idle_timeout,
+          'selenium-version' => settings.tb_selenium_version,
+          'record-screenshots' => settings.tb_record_screenshot
+      }
+
+      unless (settings.tb_browser_version.to_s || "").empty?
+        caps_opts['browser-version'] = settings.tb_browser_version.to_s
+      end
+
+      options = {
+          url: settings.tb_url,
+          desired_capabilities: Selenium::WebDriver::Remote::Capabilities.new(caps_opts),
+          http_client: Selenium::WebDriver::Remote::Http::Default.new.tap{|c| c.timeout = settings.timeout_medium},
+          browser: :remote
+      }
+
+      Capybara.register_driver :testingbot do |app|
+        driver = Capybara::Selenium::Driver.new(app, options)
+        driver.browser.file_detector = lambda do |args|
+          str = args.first.to_s
+          str if File.exist?(str)
+        end
+        driver
+      end
 
     else
-      log.error "Unknown '#{settings.driver}' driver. Check your settings, it should be one of [selenium, selenium_dev, webkit, sauce]"
+      log.error "Unknown '#{settings.driver}' driver. Check your settings, it should be one of [selenium, selenium_dev, webkit, sauce, testingbot]"
   end
 
   Capybara.default_driver = settings.driver.to_sym
