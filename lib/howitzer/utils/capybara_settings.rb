@@ -103,7 +103,7 @@ module CapybaraSettings
       }
 
       unless (settings.tb_browser_version.to_s || "").empty?
-        caps_opts['browser-version'] = settings.tb_browser_version.to_s
+        caps_opts['version'] = settings.tb_browser_version.to_s
       end
 
       options = {
