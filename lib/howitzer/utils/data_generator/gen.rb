@@ -41,7 +41,7 @@ module DataGenerator
       private
 
       def gen_user_email(serial=nil)
-        "#{gen_user_name(serial)}@#{settings.mail_pop3_domain}"
+        "testing#{gen_user_name(serial)}@#{settings.mail_pop3_domain}"
       end
 
       def gen_user_name(serial=nil)
