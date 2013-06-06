@@ -26,6 +26,9 @@ After do |scenario|
     session_end = duration(Time.now.utc - DataStorage.extract('sauce', :start_time))
     log.info "SAUCE VIDEO #@session_start - #{session_end} URL: #{sauce_resource_path('video.flv')}"
   end
+  if testingbot_driver?
+    log.info "TestingBot debug info: #{CapybaraSettings.update_testingbot_test_status}"
+  end
   DataStorage.clear_ns("user")
 end
 
