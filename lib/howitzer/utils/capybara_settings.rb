@@ -142,9 +142,9 @@ module CapybaraSettings
     RestClient.put url, json_data.to_json, content_type: :json, accept: :json
   end
 
-  def update_testingbot_test_status(data = {})
-    url = "-u #{settings.tb_api_key}:#{settings.tb_api_secret} https://api.testingbot.com/v1/tests/#{session_id}"
-    RestClient.get url
+  def update_testingbot_test_status(json_data = {})
+    url = "https://#{settings.tb_api_key}:#{settings.tb_api_secret}@api.testingbot.com/v1/tests/#{session_id}"
+    RestClient.put url, json_data.to_json, content_type: :json, accept: :json
   end
 
   def suite_name

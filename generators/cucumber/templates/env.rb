@@ -27,7 +27,9 @@ After do |scenario|
     log.info "SAUCE VIDEO #@session_start - #{session_end} URL: #{sauce_resource_path('video.flv')}"
   end
   if testingbot_driver?
-    log.info "TestingBot debug info: #{CapybaraSettings.update_testingbot_test_status}"
+    DataStorage.store('testingbot', :status, false) if scenario.failed?
+    testingbot_session_end = duration(Time.now.utc - DataStorage.extract('testingbot', :start_time))
+    log.info "TESTINGBOT VIDEO #@session_start - #{testingbot_session_end}"
   end
   DataStorage.clear_ns("user")
 end
@@ -36,6 +38,9 @@ at_exit do
   if sauce_driver?
     log.info "SAUCE SERVER LOG URL: #{CapybaraSettings.sauce_resource_path('selenium-server.log')}"
     CapybaraSettings.update_sauce_job_status(passed: DataStorage.extract('sauce', :status))
+  end
+  if testingbot_driver?
+    CapybaraSettings.update_testingbot_test_status('test[success]' => DataStorage.extract('testingbot', :status))
   end
   Gen.delete_all_mailboxes
 end
