@@ -96,8 +96,8 @@ module CapybaraSettings
           platform: settings.tb_platform,
           browser_name: settings.tb_browser_name,
           name: "#{ENV['RAKE_TASK'] ? (task_name.empty? ? 'ALL' : task_name) : 'CUSTOM'} #{settings.tb_browser_name.upcase}",
-          maxduration: settings.tb_max_duration,
-          idletimeout: settings.tb_idle_timeout,
+          maxduration: settings.tb_max_duration.to_i,
+          idletimeout: settings.tb_idle_timeout.to_i,
           'selenium-version' => settings.tb_selenium_version,
           screenshot: settings.tb_record_screenshot
       }
