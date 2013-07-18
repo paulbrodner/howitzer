@@ -29,7 +29,7 @@ module DataGenerator
 
       def serial
         a = [('a'..'z').to_a, (0..9).to_a].flatten.shuffle
-        "#{Time.now.utc.strftime("%j%H%M%S")}#{a[0..4].join}"
+        "#{Time.now.utc.strftime("%j%H%M%S")}#{a[0..3].join}"
       end
 
       def delete_all_mailboxes
@@ -41,7 +41,7 @@ module DataGenerator
       private
 
       def gen_user_email(serial=nil)
-        "testing#{gen_user_name(serial)}@#{settings.mail_pop3_domain}"
+        "#{gen_user_name(serial)}@#{settings.mail_pop3_domain}"
       end
 
       def gen_user_name(serial=nil)

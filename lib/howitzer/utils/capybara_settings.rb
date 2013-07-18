@@ -99,7 +99,8 @@ module CapybaraSettings
           maxduration: settings.tb_max_duration.to_i,
           idletimeout: settings.tb_idle_timeout.to_i,
           'selenium-version' => settings.tb_selenium_version,
-          screenshot: settings.tb_record_screenshot
+          screenshot: settings.tb_record_screenshot,
+          'avoid-proxy' => settings.tb_avoid_proxy
       }
 
       unless (settings.tb_browser_version.to_s || "").empty?
